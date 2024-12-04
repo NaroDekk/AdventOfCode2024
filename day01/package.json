@@ -2,6 +2,10 @@
   "name": "advent01",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun solution.ts --watch",
+    "start": "bun solution.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
