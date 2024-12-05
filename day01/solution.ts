@@ -1,22 +1,7 @@
-import fs from "fs";
+import { extractDataFromFile } from "./reader";
 
-const listA = new Array();
-const listB = new Array();
-const LINE_LENGTH = 13;
-
-function extractDataFromFile(filePath: string): void {
-  const file = fs.readFileSync(filePath, "utf-8");
-  const lines = file.split("\n");
-
-  lines.forEach((line) => {
-    const [a, b] = line.split("   ");
-    if (isNaN(parseInt(a)) || isNaN(parseInt(b))) {
-      return;
-    }
-    listA.push(parseInt(a));
-    listB.push(parseInt(b));
-  });
-}
+const listA: Array<number> = new Array();
+const listB: Array<number> = new Array();
 
 function sortLists(): void {
   listA.sort((a, b) => a - b);
@@ -31,6 +16,17 @@ function calcTotalDistance() {
   return totalDistance;
 }
 
-extractDataFromFile("input.txt");
+function calcTotalSimilarity() {
+  let totalSimilarity = 0;
+  for (let i = 0; i < listA.length; i++) {
+    let occurences = 0;
+    listB.forEach((element) => occurences += listA[i] === element ? 1 : 0);
+    totalSimilarity += occurences * listA[i];
+  }
+  return totalSimilarity;
+}
+
+extractDataFromFile("./input.txt", listA, listB);
 sortLists();
-console.log(calcTotalDistance());
+console.log("Distance between lists " + calcTotalDistance());
+console.log("Similarity score " + calcTotalSimilarity());
